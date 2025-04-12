@@ -1,45 +1,54 @@
-const tasks = [
+let tasks = [
     {
-        name: "Teste",
+        name: "Test 1",
         isDone: true
     }
 ]
 
-function addTask(name){
-    tasks.push(
-        {
-            name: name,
-            isDone: true
-        }
-    )
+const  addTask = (name) => {
+    tasks = [...tasks, {name, isDone: true}];
     listTasks();
 }
 
 
-function markAsCompleted(name) {
+const toogleStatus = (name) => {    
     const task = tasks.find(task => task.name === name);
     if (task) {
-        task.isDone = true;
+        task.isDone = !task.isDone;
         listTasks();
+    }else{
+        alert("Task does not exists")
     }
 }
 
-function clearTasks(){
+const clearTasks = () => {
     const ul = document.getElementById("tasks");
     ul.innerHTML = "";
 }
 
-function listTasks(){
+const listTasks = () => {
     clearTasks();
     const ul = document.getElementById("tasks");
 
-    tasks.forEach((task) => {
+    tasks.forEach(({name, isDone}) => {
         const li = document.createElement("li");
-        li.id = task.name;
-        li.innerHTML = "Tarefa: " + task.name + "<br>" +
-                       "Ativa: " + task.isDone +
-                       "<button onClick='li.id'>Concluida</button>";
+        li.id = name;
+        li.innerHTML = `Task: ${name} - Status: ${isDone ? 'Active' : 'Finished'} - <button onClick="toogleStatus('${name}')">Finish</button>`;
         ul.appendChild(li);
+    });
+}
+
+const filterTasksByStatus = (status) => {
+    const ul = document.getElementById("tasks");
+    ul.innerHTML = ""; 
+
+    tasks.forEach(({name, isDone}) => {
+        if (isDone === status) {
+            const li = document.createElement("li");
+            li.id = name;
+            li.innerHTML = `Task: ${name} - Ativa: ${isDone ? 'Active' : 'Finished'} - <button onClick="toogleStatus('${name}')">Finish</button>`;
+            ul.appendChild(li);
+        }
     });
 }
 
